@@ -14,31 +14,29 @@ import React from 'react';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import ChangePhotoBox from './ChangePhotoBox';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeFromPlaylist, updateProfilePicture } from '../../redux/actions/profile';
+
+
+
 
 export const Profile = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const {user}=useSelector(state=>state.user)
 
-  const user = {
-    name: 'Naz',
-    email: 'nazpro@gmail.com',
-    createdAt: String(new Date().toISOString()),
-    role: 'user',
-    subscription: {
-      status: 'active',
-    },
-    playlist:[
-        {
-            course:'hft',
-            poster:'https://picsum.photos/400/400'
-        }
-    ]
-  };
 
-  const removeFromPlaylistHandler=()=>{
 
+  const dispatch = useDispatch()
+
+  const removeFromPlaylistHandler=(courseId)=>{
+        dispatch(removeFromPlaylist(courseId))
   }
-  const changeImageSubmitHandler=(e, image)=>{
-        e.preventDefault()
+  const changeImageSubmitHandler=async(e, image)=>{
+    e.preventDefault()
+    const myForm = new FormData()
+    myForm.append('file', image)
+    dispatch(updateProfilePicture(myForm,onClose))
+   
   }
 
   return (
@@ -53,7 +51,7 @@ export const Profile = () => {
         padding="8"
       >
         <VStack>
-          <Avatar boxSize={'48'} />
+          <Avatar boxSize={'48'}  src={user?.avatar?.url}/>
           <Button onClick={onOpen} colorScheme={'yellow'} variant="ghost">
             Change Photo
           </Button>

@@ -1,15 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfile } from '../../redux/actions/profile';
+import { useNavigate } from 'react-router-dom';
 
 
-export const UpdateProfile = ({user}) => {
+
+export const UpdateProfile = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const {user}=useSelector(state=>state.user)
+
+    const dispatch =useDispatch()
+    const navigate = useNavigate()
 
 
-    const submitHandler=()=>{
-
+    const submitHandler=(e)=>{
+      e.preventDefault()
+     dispatch(updateProfile(name, email, navigate))
     }
+
+    
   return (
     <Container py="16" minH={'90vh'}>
       <form onSubmit={submitHandler}>
@@ -22,14 +33,14 @@ export const UpdateProfile = ({user}) => {
 
         <VStack spacing={'8'}>
           <Input
-            value={name}
+            defaultValue={user?.name}
             onChange={e => setName(e.target.value)}
             placeholder="Name"
             type={'text'}
             focusBorderColor="yellow.500"
           />{' '}
           <Input
-            value={email}
+            defaultValue={user?.email}
             onChange={e => setEmail(e.target.value)}
             placeholder="Email"
             type={'email'}

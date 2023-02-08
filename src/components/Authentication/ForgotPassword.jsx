@@ -1,12 +1,35 @@
-import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { Button, Container, Heading, Input, Spinner, VStack } from '@chakra-ui/react';
+import React, { useState , useEffect} from 'react';
+import { toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { forgetPassword } from '../../redux/actions/profile';
 
 const ForgotPassword = () => {
     const [email, setEmail]=useState('')
+    const {error, message, loading}= useSelector(state=>state.profile)
+
+    const dispatch= useDispatch()
+
+    const submitHandler =(e)=>{
+        e.preventDefault()
+        dispatch(forgetPassword(email))
+    }
+
+    useEffect(()=>{
+        if(error){
+            toast.error(error)
+            dispatch({type:'clearError'})
+        }
+        if(message){
+            toast.success(message)
+            dispatch({type:'clearMessage'})
+        }
+    },[dispatch,error, message])
 
     return (
         <Container minH={'90vh'} py='16'>
-            <form>
+
+            <form onSubmit={submitHandler}>
 
                 <Heading children='Forget Password'
                 my={'16'}
@@ -24,10 +47,13 @@ const ForgotPassword = () => {
                         placeholder='site@hmail.com'
                         type={'email'} 
                     />
-                    <Button type='submit' w='full' colorScheme={'yellow'} >Submit</Button>
+                    <Button type='submit' w='full' colorScheme={'yellow'} isDisabled={loading && true}>
+                        {loading ? <Spinner/> : 'Submit'}
+                    </Button>
 
                 </VStack>
             </form>
+
         </Container>
     );
 };

@@ -1,10 +1,15 @@
-import { Avatar, Button, Container, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { Avatar, Button, Container, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, VStack } from '@chakra-ui/react';
+import React, {useState } from 'react';
+import {useSelector } from 'react-redux';
 import { fileUploadCss } from '../Authentication/Register';
 
 const ChangePhotoBox = ({isOpen, onClose, changeImageSubmitHandler}) => {
     const [image, setImage] = useState('');
     const [imagePrev, setImagePrev] = useState('');
+    const {loading}= useSelector(state=>state.profile)
+
+
+
   
     const changeImage = e => {
       const file = e.target.files[0];
@@ -17,6 +22,9 @@ const ChangePhotoBox = ({isOpen, onClose, changeImageSubmitHandler}) => {
         setImage(file);
       };
     };
+
+
+
   
     const closeHandler = () => {
       onClose();
@@ -46,7 +54,9 @@ const ChangePhotoBox = ({isOpen, onClose, changeImageSubmitHandler}) => {
                     colorScheme={'yellow'}
                     type="submit"
                   >
-                    Change
+                   {
+                    loading ? <Spinner/> : 'Change'
+                   }
                   </Button>
                 </VStack>
               </form>

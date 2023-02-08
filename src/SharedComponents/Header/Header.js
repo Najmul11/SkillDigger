@@ -1,22 +1,36 @@
 import { Button, Drawer, DrawerBody, DrawerContent,DrawerHeader, DrawerOverlay, HStack, useDisclosure, VStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {RiMenu5Fill, RiLogoutBoxLine, RiDashboardFill} from 'react-icons/ri'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
+import { logout } from '../../redux/actions/user';
 import LinkButton from './LinkButton/LinkButton';
+
+
+
 
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {isAuthenticated, user, message }=useSelector(state=>state.user)
 
-  const isAuthenticated=true
-  const user={
-    role:'admin'
-  }
+  const dispatch = useDispatch()
+
 
   const logoutHandler=()=>{
-    console.log(typeof onClose); onClose()
+    dispatch(logout())
+   
+    onClose()
   }
+  useEffect(()=>{
+    if(message) {
+        // toast.success(message)
+        dispatch({type:'clearMessage'})
+    }
+  },[message, dispatch])
+
+
 
     return (
         <div>

@@ -1,7 +1,7 @@
 import { Box, Button, Heading, HStack, Image, Stack, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import vg from '../../assets/images/bg.png'
+import vg from '../../assets/images/bg2.png'
 import './Home.css'
 import {CgGoogle, CgYoutube} from 'react-icons/cg'
 import {SiCoursera, SiUdemy} from 'react-icons/si'

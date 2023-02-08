@@ -22,6 +22,7 @@ import { CreateCourse } from "../components/Admin/CreateCourse/CreateCourse";
 import { AdminCourses } from "../components/Admin/AdminCourses/AdminCourses";
 import { Users } from "../components/Admin/Users/Users";
 import { DashboardLayout } from "../layout/DashboardLayout";
+import ProtectedRoute from "./ProtectedRoute";
 
  export const router=createBrowserRouter([
     {
@@ -70,15 +71,15 @@ import { DashboardLayout } from "../layout/DashboardLayout";
             },
             {
                 path:'/profile',
-                element:<Profile/>
+                element:<ProtectedRoute><Profile/></ProtectedRoute>
             },
             {
                 path:'/changepassword',
-                element:<ChangePassword/>
+                element:<ProtectedRoute><ChangePassword/></ProtectedRoute>
             },
             {
                 path:'/updateprofile',
-                element:<UpdateProfile/>
+                element:<ProtectedRoute><UpdateProfile/></ProtectedRoute>
             },
             {
                 path:'/subscribe',

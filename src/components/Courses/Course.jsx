@@ -2,11 +2,13 @@ import { Button, Heading, HStack, Image, Stack, Text, VStack } from '@chakra-ui/
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Course = ({views, title, image, id, creator, description, handler, lecture}) => {
+const Course = ({course, addToPlaylistHandler}) => {
+    const {views, title,poster, _id, createdBy, description, numOfVideos}=course
+
     return (
         <VStack className='course' alignItems={['center', 'flex-start' ]}>
 
-            <Image src={image} boxSize='60' objectFit={'contain'}/>
+            <Image src={poster?.url} boxSize='60' objectFit={'contain'}/>
 
             <Heading children={title}
             size={'sm'}
@@ -20,12 +22,12 @@ const Course = ({views, title, image, id, creator, description, handler, lecture
 
             <HStack>
                 <Text textTransform={'uppercase'} fontWeight={'bold'} children={'creator'}/>
-                <Text textTransform={'uppercase'} fontFamily={'body'} children={creator}/>
+                <Text textTransform={'uppercase'} fontFamily={'body'} children={createdBy}/>
             </HStack>
 
             <Heading textAlign={'center'}
             size='xs'
-            children={`Lectures - ${lecture}`}
+            children={`Lectures - ${numOfVideos}`}
             textTransform={'uppercase'}
             />
 
@@ -36,7 +38,7 @@ const Course = ({views, title, image, id, creator, description, handler, lecture
             />
 
             <Stack direction={['column', 'row']}>
-                <Link to={`/course/${id}`}>
+                <Link to={`/course/${_id}`}>
                 <Button
                     colorScheme='yellow'
                     >
@@ -47,7 +49,7 @@ const Course = ({views, title, image, id, creator, description, handler, lecture
                 <Button
                     variant={'ghost'}
                     colorScheme='yellow'
-                    onClick={handler}
+                    onClick={()=>addToPlaylistHandler(_id)}
                     >
                     Add to Playlist
                 </Button>

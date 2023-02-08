@@ -1,18 +1,42 @@
-import { Button, Container, Heading, HStack, Input, Stack, Text } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Button, Container, Heading, HStack, Input, Spinner, Stack, Text, VStack } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux/es/exports'
+import { getAllCourses } from '../../redux/actions/course'
+import { addToPlaylist } from '../../redux/actions/profile'
 import Course from './Course'
 
 export const Courses = () => {
     const [keyword, setKeyword]=useState('')
     const [category, setCategory]=useState('')
 
-    const addToPlaylistHandler=()=>{
+    const {loading, courses,message, error}= useSelector(state=>state.course)
 
+    const dispatch= useDispatch()
+
+    useEffect(()=>{
+        dispatch(getAllCourses(category, keyword))
+
+        if(message){
+            toast.success(message)
+            dispatch({type:'clearMessage'})
+        }
+        if(error){
+            toast.error(error)
+            dispatch({type:'clearError'})
+        }
+        
+    },[dispatch, category, keyword, message, error])
+
+    const addToPlaylistHandler=(id)=>{
+        dispatch(addToPlaylist(id))
     }
 
+   
     const categories=[
         "Introduction to Programming", 
-        "Web Development Fundamentals",
+        "Web Development",
         "Data Structures and Algorithms", 
         "Machine Learning",
         "Cloud Computing", 
@@ -47,16 +71,22 @@ export const Courses = () => {
              justifyContent={['flex-start','space-evenly']}
              alignItems={['center', 'flex-start']}
              >
-                <Course
-                title={'Sample'}
-                description={'Sample'}
-                creator={'Sample boy'}
-                lecture={2}
-                image={'https://picsum.photos/300/300'}
-                views={23}
-                id={'Sample'}
-                handler={addToPlaylistHandler}
-                />
+               {
+                    loading ? 
+                    <VStack justifyContent='center'>
+                            <Spinner color='yellow.500' size='xl'></Spinner> 
+                    </VStack>
+                    :
+                    courses?.length >0 ? courses.map(course =>
+                    <Course
+                        key={course._id} 
+                        course={course} 
+                        addToPlaylistHandler={addToPlaylistHandler} >
+                    </Course>
+                    )
+                    :
+                    <Heading children='No Course Found' mt={'4'} opacity='.9'/>
+               }
 
              </Stack>
         </Container>
