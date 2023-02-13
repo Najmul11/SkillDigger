@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 import { server } from "../store";
 
 
@@ -30,7 +31,7 @@ export const register = (formdata) => async dispatch => {
     dispatch({ type: 'registerRequest' });
 
     const { data } = await axios.post(
-      `${server}/register`,
+      `${server}/registeraccount`,
       formdata,
       {
         headers: {
@@ -39,11 +40,12 @@ export const register = (formdata) => async dispatch => {
         withCredentials: true,
       }
     );
-    console.log(formdata)
    dispatch({ type: 'registerSuccess', payload: data });
-  //  navigate(from, {replace:true})
+   <Navigate to={'/login'}></Navigate>
+   
   } catch (error) {
-    dispatch({ type: 'regusterFail', payload: error.response.data.message });
+    dispatch({ type: 'registerFail', payload: error.response.data.message });
+
   }
 };
 

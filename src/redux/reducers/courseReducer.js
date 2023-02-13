@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 
-export const courseReducer=createReducer({},{
+export const courseReducer=createReducer({courses: [], lectures: []},{
    allCoursesRequest:(state)=>{
         state.loading=true
    },
@@ -29,5 +29,16 @@ export const courseReducer=createReducer({},{
    },
    clearMessage:(state)=>{
      state.message=null
-   }
+   },
+   getCourseRequest: state => {
+     state.loading = true;
+   },
+   getCourseSuccess: (state, action) => {
+     state.loading = false;
+     state.lectures = action.payload;
+   },
+   getCourseFail: (state, action) => {
+     state.loading = false;
+     state.error = action.payload;
+   },
 })

@@ -1,25 +1,25 @@
 import { Box, Heading, Table, TableCaption, TableContainer, Tbody, Th, Thead, Tr } from '@chakra-ui/react'
-import React from 'react'
+import React, {useEffect} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteUser, getAllUsers, updateUser } from '../../../redux/actions/admin'
 import Row from './Row'
 
 export const Users = () => {
-  const users=[
-    {
-      _id:'iojfhvj',
-      name:'Naz',
-      role:'admin',
-      email:'naz@gmail.com',
-      subscription:{
-        status:'active'
-      },
-    }
-  ]
-  const updateHandler=()=>{
+  const {users, loading, error}=useSelector(state=>state.admin)
 
+  const dispatch = useDispatch()
+
+
+  useEffect(()=>{
+    dispatch(getAllUsers())
+  },[dispatch])
+
+  const updateHandler=(userId)=>{
+    dispatch(updateUser(userId))
   }
 
-  const deleteButtonHandler=()=>{
-
+  const deleteButtonHandler=(userId)=>{
+    dispatch(deleteUser(userId))
   }
   return (
     <Box>
@@ -52,7 +52,7 @@ export const Users = () => {
                     updateHandler={updateHandler}
                     deleteButtonHandler={deleteButtonHandler}
                     item={item}
-                    // loading={loading}
+                    loading={loading}
                   />
                 ))}
             </Tbody>

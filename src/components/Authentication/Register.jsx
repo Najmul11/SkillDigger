@@ -1,7 +1,8 @@
-import { Avatar, Box, Button, Container, FormLabel, Heading, Input, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Avatar, Box, Button, Container, FormLabel, Heading, Input, Text, VStack } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../redux/actions/user';
 
 export const fileUploadCss={
@@ -24,6 +25,11 @@ const Register = () => {
     const [password, setPassword]=useState('')
     const [imagePrev, setImagePrev]=useState('')
     const [image, setImage]=useState('')
+    
+    const {loading,error} = useSelector(state=>state.user)
+
+
+    const navigate =useNavigate()
   
     const dispatch = useDispatch()
 
@@ -46,8 +52,14 @@ const Register = () => {
         myForm.append('password', password)
         myForm.append('file', image)
 
-        dispatch(register(myForm))
+        dispatch(register(myForm, navigate))
     }
+    useEffect(()=>{
+        if (error) {
+            toast.error(error)
+            dispatch({type:'clearError'})
+        }
+    },[error, dispatch])
     return (
         <Container h={'95vh'}>
 
@@ -113,10 +125,10 @@ const Register = () => {
                     />
                </Box>
 
-               <Button  my={'4'} colorScheme='yellow' type='submit'>Sign Up</Button>
+               <Button isLoading={loading} my={'4'} colorScheme='yellow' type='submit'>Sign Up</Button>
 
                <Box my={'4'}>
-                    <text children='Have an Account?'/>
+                    <Text children='Have an Account?'/>
                     <Link to={'/login'} >
                         <Button colorScheme={'yellow'} variant='link' mx={'2'}>
                             Login

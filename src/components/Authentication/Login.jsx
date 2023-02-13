@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormLabel, Heading, Input, VStack } from '@chakra-ui/react'
+import { Box, Button, Container, FormLabel, Heading, Input, Text, VStack } from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
@@ -76,7 +76,7 @@ export const Login = () => {
                <Button  my={'4'} colorScheme='yellow' type='submit'>Login</Button>
 
                <Box my={'4'}>
-                    <text children='New User?'/>
+                    <Text children='New User?'/>
                     <Link to={'/register'} >
                         <Button colorScheme={'yellow'} variant='link' mx={'2'}>
                             Sign UP

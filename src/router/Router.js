@@ -23,6 +23,7 @@ import { AdminCourses } from "../components/Admin/AdminCourses/AdminCourses";
 import { Users } from "../components/Admin/Users/Users";
 import { DashboardLayout } from "../layout/DashboardLayout";
 import ProtectedRoute from "./ProtectedRoute";
+import { AntiProtected } from "./AntiProtected";
 
  export const router=createBrowserRouter([
     {
@@ -43,7 +44,7 @@ import ProtectedRoute from "./ProtectedRoute";
             },
             {
                 path:'/login',
-                element:<Login/>
+                element:<AntiProtected><Login/></AntiProtected>
             },
             {
                 path:'/register',
@@ -51,7 +52,7 @@ import ProtectedRoute from "./ProtectedRoute";
             },
             {
                 path:'/forgotpassword',
-                element:<ForgotPassword/>
+                element:<AntiProtected><ForgotPassword/></AntiProtected>
             },
             {
                 path:'/resetpassword/:token',
