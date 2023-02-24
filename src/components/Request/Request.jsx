@@ -3,9 +3,11 @@ import React, { useState,  useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import useTitle from '../../Hooks/useTitle';
 import { courseRequest } from '../../redux/actions/contact';
 
 const Request = () => {
+    useTitle('Request')
     const [email, setEmail]=useState('')
     const [name, setName]=useState('')
     const [course, setCourse]=useState('')

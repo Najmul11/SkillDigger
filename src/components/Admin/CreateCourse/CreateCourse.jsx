@@ -1,15 +1,36 @@
 import { Button, Container, Heading, Image, Input, Select, VStack } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import useTitle from '../../../Hooks/useTitle';
+import { createCourse } from '../../../redux/actions/admin';
 import { fileUploadCss } from '../../Authentication/Register';
 
 export const CreateCourse = () => {
+  useTitle('admin/Create courses')
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [createdBy, setCreatedBy] = useState('');
   const [category, setCategory] = useState('');
   const [image, setImage] = useState('');
   const [imagePrev, setImagePrev] = useState('');
+
+  const {loading, message, error} = useSelector(state=>state.admin)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error)
+      dispatch({type:'clearError'})
+    }
+    if (message) {
+      toast.success(message)
+      dispatch({type:'clearMessage'})
+    }
+  }, [dispatch, error, message])
+  
 
 
   const categories = [
@@ -35,9 +56,31 @@ export const CreateCourse = () => {
     };
   };
 
+  const submitHandler = async (e)=>{
+    e.preventDefault()
+
+    const myForm=  new FormData()
+    myForm.append('title',title )
+    myForm.append('description',description )
+    myForm.append('category',category )
+    myForm.append('createdBy',createdBy)
+    myForm.append('file',image)
+
+    const stats=await dispatch(createCourse(myForm))
+    if (stats.success===true) {
+      setTitle('')
+      setCategory('')
+      setCreatedBy('')
+      setDescription('')
+      setImagePrev('')
+    }
+
+
+  }
+
   return (
     <Container py="16">
-      <form>
+      <form onSubmit={submitHandler}>
           <Heading
               textTransform={'uppercase'}
               children="Create Course"
@@ -75,7 +118,7 @@ export const CreateCourse = () => {
               value={category}
               onChange={e => setCategory(e.target.value)}
             >
-              <option value="">Category</option>
+              <option disabled value="">Category</option>
 
               {categories.map(item => (
                 <option key={item} value={item}>
@@ -102,7 +145,7 @@ export const CreateCourse = () => {
               <Image src={imagePrev} boxSize="64" objectFit={'contain'} />
             )}
             <Button
-              // isLoading={loading}
+              isLoading={loading}
               w="full"
               colorScheme={'purple'}
               type="submit"

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import { server } from "../store";
 
 
@@ -20,6 +20,7 @@ export const login = (email, password) => async dispatch => {
       );
      dispatch({ type: 'loginSuccess', payload: data });
     } catch (error) {
+      toast.error('Email or password invalid')
       dispatch({ type: 'loginFail', payload: error.response.data.message });
     }
 };
@@ -41,8 +42,7 @@ export const register = (formdata) => async dispatch => {
       }
     );
    dispatch({ type: 'registerSuccess', payload: data });
-   <Navigate to={'/login'}></Navigate>
-   
+   return data
   } catch (error) {
     dispatch({ type: 'registerFail', payload: error.response.data.message });
 

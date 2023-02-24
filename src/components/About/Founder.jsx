@@ -1,12 +1,13 @@
 import { Avatar, Heading, Stack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
+import founder from '../../assets/images/founder.png'
 
 const Founder = () => {
     return (
         <Stack direction={['column', 'row']} spacing={['4', '16']} padding='8'>
 
             <VStack>
-                <Avatar src='https://picsum.photos/200' boxSize={['45', '40']} /> 
+                <Avatar src={founder} boxSize={['45', '40']} /> 
                 <Text children='Co-Founder' opacity={0.7}/>
             </VStack>
 

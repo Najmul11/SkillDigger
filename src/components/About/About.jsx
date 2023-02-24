@@ -6,11 +6,13 @@ import introVideo from '../../assets/videos/intro.mp4'
 import {RiSecurePaymentFill} from 'react-icons/ri'
 import TandC from './TandC'
 import data from '../../assets/docs/termsAndCondition'
+import useTitle from '../../Hooks/useTitle'
 
 
 
 
 export const About = () => {
+  useTitle('About')
   return (
     <Container maxW={'container.lg'} padding='16' boxShadow={'lg'}>
         <Heading children='About SKill Digger' textAlign={['center', 'left']}/>
@@ -45,7 +47,7 @@ export const About = () => {
 
         <HStack my={'4'} p='4'>
             <RiSecurePaymentFill/>
-            <Heading size={'xs'} fontFamily='sans-serif' textTransform={'uppercase'} children='Payment is secured with RazorPay'/>
+            <Heading size={'xs'} fontFamily='sans-serif' textTransform={'uppercase'} children='Payment is secured with Stripe'/>
         </HStack>
         
     </Container>

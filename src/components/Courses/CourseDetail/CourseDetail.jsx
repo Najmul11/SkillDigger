@@ -1,40 +1,32 @@
-import { Box, Grid, Heading, Text, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import introVideo from '../../../assets/videos/intro.mp4'
+import { Box, Container, Grid, Heading, Text, VStack } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate, useParams } from 'react-router-dom';
+import { getCourseLectures } from '../../../redux/actions/course';
 
 
 const CourseDetail = () => {
   const [lectureNumber, setLectureNumber] = useState(0);
+  const {lectures}=useSelector(state=>state.course)
+  const {user} = useSelector(state=>state.user)
+  const dispatch = useDispatch()
+  const {id} = useParams()
 
-    const lectureTitle='lectureTitle'
+  useEffect(()=>{
+    dispatch(getCourseLectures(id))
+  },[dispatch, id])
 
-    const lectures=[
-        {
-            _id:'gyfy7fgy7',
-            title:'sample',
-            description:'sample description',
-            video:{
-                url:'samle.com'
-            }
-        },
-        {
-            _id:'gyfy7fgy7',
-            title:'sample sample',
-            description:'sample description',
-            video:{
-                url:'samle.com'
-            }
-        },
-        {
-            _id:'gyfy7fgy7',
-            title:'sample gample',
-            description:'sample description',
-            video:{
-                url:'samle.com'
-            }
-        },
-    ]
+
+    if (user?.role !=='admin' && (user?.subscription === undefined || user.subscription.status !=='active')) {
+      return <Navigate to='/subscribe'/>
+    }
+
+   
+
     return (
+      <>
+      {
+        lectures && lectures.length >0 ?
         <Grid minH={'90vh'}  templateColumns={['1fr', '3fr 1fr']} py='20'>
            <>
           <Box>
@@ -44,18 +36,18 @@ const CourseDetail = () => {
               controlsList="nodownload noremoteplayback"
               disablePictureInPicture
               disableRemotePlayback
-              src={introVideo}
+              src={lectures?.[lectureNumber]?.video?.url}
             ></video>
 
             <Heading
               m="4"
               children={`#${lectureNumber + 1} ${
-                lectures[lectureNumber].title
+                lectures[lectureNumber]?.title
               }`}
             />
 
             <Heading m="4" children="Description" />
-            <Text m="4" children={lectures[lectureNumber].description} />
+            <Text m="4" children={lectures[lectureNumber]?.description} />
           </Box>
 
           <VStack>
@@ -81,6 +73,17 @@ const CourseDetail = () => {
           </VStack>
         </>
         </Grid>
+        :
+        <Container h={'90vh'} p="16">
+
+          <VStack justifyContent={'center'} h="full" spacing={'4'}>
+            <Heading children='No Lecture Found' opacity='.9' textAlign={'center'}/>
+          </VStack>
+
+        </Container>
+      }
+        
+      </>
     );
 };
 

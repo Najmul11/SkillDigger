@@ -1,6 +1,6 @@
 import axios from "axios";
 import { server } from "../store";
-import { getCourseLectures } from "./course";
+import { getAllCourses, getCourseLectures } from "./course";
 
 
 export const getAllUsers=()=>async dispatch=>{
@@ -53,10 +53,53 @@ export const updateUser=(userId)=>async dispatch=>{
 
        dispatch({type:'updateUserSuccess', payload:data.message})
        dispatch(getAllUsers())
+       return data
     } catch (error) {
         dispatch({type:'updateUserFail', payload:error.response.data.message})
     }
 }
+
+export const createCourse = formData => async dispatch => {
+    try {
+      const config = {
+        headers: {
+          'Content-type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      };
+      dispatch({ type: 'createCourseRequest' });
+      
+      const { data } = await axios.post(`${server}/createcourse`,
+        formData,
+        config
+      );
+      
+      dispatch({ type: 'createCourseSuccess', payload: data.message });
+      return data
+    } catch (error) {
+      dispatch({type: 'createCourseFail', payload: error.response.data.message});
+    }
+  };
+
+
+  export const deleteCourse = id => async dispatch => {
+    try {
+      const config = {
+        withCredentials: true,
+      };
+      dispatch({ type: 'deleteCourseRequest' });
+  
+      const { data } = await axios.delete(`${server}/course/${id}`, config);
+  
+      dispatch({ type: 'deleteCourseSuccess', payload: data.message });
+      dispatch(getAllCourses())
+    } catch (error) {
+      dispatch({
+        type: 'deleteCourseFail',
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 
 export const addLecture=(id,formdata)=>async dispatch=>{

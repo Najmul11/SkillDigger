@@ -3,17 +3,17 @@ import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '../../redux/actions/profile';
 import { useNavigate } from 'react-router-dom';
-
-
+import useTitle from '../../Hooks/useTitle';
 
 export const UpdateProfile = () => {
+  useTitle('Update profile')
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const {user}=useSelector(state=>state.user)
 
+
     const dispatch =useDispatch()
     const navigate = useNavigate()
-
 
     const submitHandler=(e)=>{
       e.preventDefault()
@@ -46,6 +46,7 @@ export const UpdateProfile = () => {
             type={'email'}
             focusBorderColor="yellow.500"
           />
+         
           <Button
             w="full"
             colorScheme={'yellow'}

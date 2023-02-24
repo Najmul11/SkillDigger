@@ -40,6 +40,7 @@ export const changePassword = (oldPassword, newPassword)=>async(dispatch)=>{
         }
         )
         dispatch({type:'changePasswordSuccess', payload:data.message})
+        return data
 
     }catch(error){
         dispatch({type:'changePasswordFail', payload:error.response.data.message})
@@ -81,7 +82,6 @@ export const forgetPassword = (email)=>async(dispatch)=>{
             withCredentials: true,
         }
         )
-        console.log(data)
         dispatch({type:'forgetPasswordSuccess', payload:data.message})
 
     }catch(error){
@@ -102,7 +102,6 @@ export const resetPassword = (token, password)=>async(dispatch)=>{
             withCredentials: true,
         }
         )
-        console.log(data)
         dispatch({type:'resetPasswordSuccess', payload:data.message})
 
     }catch(error){
@@ -156,6 +155,7 @@ export const addToPlaylist = id => async dispatch => {
   
       dispatch({ type: 'removeFromPlaylistSuccess', payload: data.message });
       dispatch(loadUser())
+      return data
     } catch (error) {
       dispatch({
         type: 'removeFromPlaylistFail',

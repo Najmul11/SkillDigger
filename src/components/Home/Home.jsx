@@ -7,8 +7,10 @@ import {CgGoogle, CgYoutube} from 'react-icons/cg'
 import {SiCoursera, SiUdemy} from 'react-icons/si'
 import {DiAws} from 'react-icons/di'
 import introVideo from '../../assets/videos/intro.mp4'
+import useTitle from '../../Hooks/useTitle'
 
 export const Home = () => {
+    useTitle('Home')
   return (
     <section className='home'>
         <div className="container">
@@ -31,7 +33,7 @@ export const Home = () => {
         </div>
         <Box padding={'8'} bg='blackAlpha.800'>
 
-            <Heading children='OUR BRANDS'
+            <Heading children='OUR PARTNERS'
             textAlign={'center'}
             fontFamily='body'
             color={'yellow.400'}

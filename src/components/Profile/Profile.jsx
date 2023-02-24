@@ -10,26 +10,35 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import ChangePhotoBox from './ChangePhotoBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromPlaylist, updateProfilePicture } from '../../redux/actions/profile';
+import { toast } from 'react-hot-toast';
+import { cancelSubscription } from '../../redux/actions/subscription';
+import useTitle from '../../Hooks/useTitle';
 
 
 
 
 export const Profile = () => {
+  useTitle('Profile')
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {user}=useSelector(state=>state.user)
-
-
+  const {message, error} = useSelector(state=>state.profile)
+  const {loading, error:subError} = useSelector(state=>state.subscription)
 
   const dispatch = useDispatch()
 
-  const removeFromPlaylistHandler=(courseId)=>{
-        dispatch(removeFromPlaylist(courseId))
+  const removeFromPlaylistHandler=async (courseId)=>{
+        const stats= await dispatch(removeFromPlaylist(courseId))
+
+        if(stats.success===true){
+          toast.success(stats.message)
+          dispatch({type:'clearMessage'})
+        }
   }
   const changeImageSubmitHandler=async(e, image)=>{
     e.preventDefault()
@@ -38,6 +47,25 @@ export const Profile = () => {
     dispatch(updateProfilePicture(myForm,onClose))
    
   }
+  const handleCancelSubscription  = async()=>{
+    const stats=await  dispatch(cancelSubscription())
+    if (stats.success===true) {
+      toast.success(stats.message)
+      dispatch({type:'clearMessage'})
+    }
+  }
+
+  useEffect(()=>{
+    if(error){
+      toast.error(error)
+      dispatch({type:'clearError'})
+    }
+    if(subError){
+      toast.error(subError)
+      dispatch({type:'clearError'})
+    }
+    
+  },[error, message, dispatch, subError])
 
   return (
     <Container minH={'95vh'} maxW="container.lg" py="8">
@@ -77,7 +105,7 @@ export const Profile = () => {
             <HStack>
               <Text children="Subscription" fontWeight={'bold'} />
               {user.subscription && user.subscription.status === 'active' ? (
-                <Button color={'yellow.500'} variant="unstyled">
+                <Button onClick={handleCancelSubscription } color={'yellow.500'} variant="unstyled" isLoading={loading}>
                   Cancel Subscription
                 </Button>
               ) : (

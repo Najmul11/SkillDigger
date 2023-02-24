@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import useTitle from '../../Hooks/useTitle';
 import { resetPassword } from '../../redux/actions/profile';
 
 const ResetPassword = () => {
+    useTitle('Reset password')
     const [password, setPassword]=useState('')
     const {error, message, loading}= useSelector(state=>state.profile)
 

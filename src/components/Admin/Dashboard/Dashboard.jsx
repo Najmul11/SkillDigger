@@ -1,12 +1,14 @@
 import {  Box, Grid, Heading, HStack, Progress, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import { RiArrowDownLine, RiArrowUpLine } from 'react-icons/ri';
+import useTitle from '../../../Hooks/useTitle';
 import { DoughnutChart, LineChart } from './Chart';
 
 
 
 
 export const Dashboard = () => {
+  useTitle('admin/Dashboard')
   return (
     <Box boxSizing="border-box" py="16" px={['4', '0']}>
       <Text

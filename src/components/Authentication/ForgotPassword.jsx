@@ -2,9 +2,11 @@ import { Button, Container, Heading, Input, Spinner, VStack } from '@chakra-ui/r
 import React, { useState , useEffect} from 'react';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
+import useTitle from '../../Hooks/useTitle';
 import { forgetPassword } from '../../redux/actions/profile';
 
 const ForgotPassword = () => {
+    useTitle('Forget password')
     const [email, setEmail]=useState('')
     const {error, message, loading}= useSelector(state=>state.profile)
 

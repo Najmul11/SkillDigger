@@ -1,11 +1,13 @@
 import React from 'react'
-import { Box, Button, Container, Heading, Text, VStack } from '@chakra-ui/react';
+import { Button, Container, Heading, VStack } from '@chakra-ui/react';
 import { RiErrorWarningFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import useTitle from '../../Hooks/useTitle';
 
 
 
 export const PaymentFail = () => {
+  useTitle('Payment fail')
   return (
     <Container h={'90vh'} p="16">
 

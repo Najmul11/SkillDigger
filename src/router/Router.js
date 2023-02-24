@@ -24,6 +24,7 @@ import { Users } from "../components/Admin/Users/Users";
 import { DashboardLayout } from "../layout/DashboardLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import { AntiProtected } from "./AntiProtected";
+import AdminRoute from "./AdminRoute";
 
  export const router=createBrowserRouter([
     {
@@ -40,7 +41,7 @@ import { AntiProtected } from "./AntiProtected";
             },
             {
                 path:'/course/:id',
-                element:<CourseDetail/>
+                element:<ProtectedRoute><CourseDetail/></ProtectedRoute>
             },
             {
                 path:'/login',
@@ -96,7 +97,7 @@ import { AntiProtected } from "./AntiProtected";
             },
             {
                 path:'/admin',
-                element:<DashboardLayout/>,
+                element:<ProtectedRoute><AdminRoute><DashboardLayout/></AdminRoute></ProtectedRoute>,
                 children:[
                     {
                         path:'/admin/dashboard',

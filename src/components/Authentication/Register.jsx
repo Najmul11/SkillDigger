@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import useTitle from '../../Hooks/useTitle';
 import { register } from '../../redux/actions/user';
 
 export const fileUploadCss={
@@ -20,6 +21,7 @@ const fileUploadStyle={
 }
 
 const Register = () => {
+    useTitle('Register')
     const [name, setName]=useState('')
     const [email, setEmail]=useState('')
     const [password, setPassword]=useState('')
@@ -44,7 +46,7 @@ const Register = () => {
         }
     }
 
-    const signUpHandler=(e)=>{
+    const signUpHandler=async(e)=>{
         e.preventDefault()
         const myForm = new FormData()
         myForm.append('name', name)
@@ -52,7 +54,11 @@ const Register = () => {
         myForm.append('password', password)
         myForm.append('file', image)
 
-        dispatch(register(myForm, navigate))
+
+        const registered=await dispatch(register(myForm))
+        if (registered.success===true) {
+            navigate('/')
+        }
     }
     useEffect(()=>{
         if (error) {

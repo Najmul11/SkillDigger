@@ -2,8 +2,10 @@ import { Button, Container, Heading, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { RiErrorWarningFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import useTitle from '../../Hooks/useTitle';
 
 export const Error = () => {
+  useTitle('404')
   return (
     <Container h={'90vh'} p="16">
 

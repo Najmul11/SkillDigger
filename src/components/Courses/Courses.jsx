@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux/es/exports'
+import useTitle from '../../Hooks/useTitle'
 import { getAllCourses } from '../../redux/actions/course'
 import { addToPlaylist } from '../../redux/actions/profile'
 import Course from './Course'
 
 export const Courses = () => {
+    useTitle('Courses')
     const [keyword, setKeyword]=useState('')
     const [category, setCategory]=useState('')
 
@@ -15,6 +17,7 @@ export const Courses = () => {
 
     const dispatch= useDispatch()
 
+    
     useEffect(()=>{
         dispatch(getAllCourses(category, keyword))
 
@@ -35,12 +38,12 @@ export const Courses = () => {
 
    
     const categories=[
-        "Introduction to Programming", 
-        "Web Development",
-        "Data Structures and Algorithms", 
-        "Machine Learning",
-        "Cloud Computing", 
-        "Cybersecurity Fundamentals"
+        'Web development',
+        'Artificial Intellegence',
+        'Data Structure & Algorithm',
+        'App Development',
+        'Data Science',
+        'Game Development',
     ]
   return (
         <Container minH={'95vh'} maxW='container.lg' paddingY={'8'}>

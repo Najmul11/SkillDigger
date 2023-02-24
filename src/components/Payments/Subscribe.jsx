@@ -4,14 +4,20 @@ import {
   Container,
   Heading,
   Text,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
+import useTitle from '../../Hooks/useTitle';
+import { CheckoutModal } from './CheckoutModal';
 
 export const Subscribe = () => {
+  useTitle('Subscribe')
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Container h={'95vh'} p='16'>
-      <Heading children="Welcome" textAlign={'center'}/>
+      <Heading children="Almost there!" textAlign={'center'}/>
 
       <VStack
         boxShadow={'lg'}
@@ -32,7 +38,7 @@ export const Subscribe = () => {
             <Heading size={'md'} children={`BDT499 only`}></Heading>
           </VStack>
 
-          <Button my={'8'} w="full" colorScheme={'yellow'} >
+          <Button onClick={onOpen} my={'8'} w="full" colorScheme={'yellow'} >
             Buy Now
           </Button>
         </Box>
@@ -48,6 +54,7 @@ export const Subscribe = () => {
           <Text fontSize={'xs'} color='white' children='*Terms & Conditions Apply '/>
         </Box>
       </VStack>
+      <CheckoutModal isOpen={isOpen} onClose={onClose}/>
     </Container>
   );
 };

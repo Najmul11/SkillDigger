@@ -1,15 +1,18 @@
 import { Box, Heading, Table, TableCaption, TableContainer, Tbody, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
 import React,{useEffect, useState} from 'react'
+import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
-import { addLecture, deleteLecture } from '../../../redux/actions/admin'
+import useTitle from '../../../Hooks/useTitle'
+import { addLecture, deleteCourse, deleteLecture } from '../../../redux/actions/admin'
 import { getAllCourses, getCourseLectures } from '../../../redux/actions/course'
 import CourseModal from './CourseModal'
 import CourseRow from './CourseRow'
 
 export const AdminCourses = () => {
+  useTitle('admin/courses')
   const [courseId, setCourseId] = useState('');
   const [courseTitle, setCourseTitle] = useState('');
-  const {courses, loading, lectures}=useSelector(state=>state.course)
+  const {courses, loading, lectures, error, message}=useSelector(state=>state.course)
   
   const {isOpen, onClose,onOpen}=useDisclosure()
   
@@ -17,8 +20,16 @@ export const AdminCourses = () => {
 
   useEffect(()=>{
       dispatch(getAllCourses())
+      if (error) {
+        toast.error(error)
+        dispatch({type:'clearError'})
+      }
+      if (message) {
+        toast.success(message)
+        dispatch({type:'clearMessage'})
+      }
       
-  },[dispatch])
+  },[dispatch, error, message])
 
   const coureDetailsHandler=(id, title)=>{
     onOpen()
@@ -27,8 +38,8 @@ export const AdminCourses = () => {
     setCourseTitle(title)
   }
 
-  const deleteButtonHandler=()=>{
-
+  const deleteButtonHandler=(courseId)=>{
+    dispatch(deleteCourse(courseId))
   }
 
   const addLectureHandler=(e, courseId, title, description, video)=>{

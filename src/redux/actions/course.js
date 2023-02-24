@@ -4,7 +4,6 @@ import { server } from "../store";
 
 
 export const getAllCourses =(category = '', keyword = '') =>async dispatch => {
-
     try {
       dispatch({ type: 'allCoursesRequest' });
 
@@ -19,7 +18,6 @@ export const getAllCourses =(category = '', keyword = '') =>async dispatch => {
         payload: error.response.data.message,
       });
     }
-
   };
 
 

@@ -1,11 +1,14 @@
 import { Box, Heading, Table, TableCaption, TableContainer, Tbody, Th, Thead, Tr } from '@chakra-ui/react'
 import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import useTitle from '../../../Hooks/useTitle'
 import { deleteUser, getAllUsers, updateUser } from '../../../redux/actions/admin'
 import Row from './Row'
+import toast from 'react-hot-toast'
 
 export const Users = () => {
-  const {users, loading, error}=useSelector(state=>state.admin)
+  useTitle('admin/Users')
+  const {users, loading}=useSelector(state=>state.admin)
 
   const dispatch = useDispatch()
 
@@ -14,8 +17,12 @@ export const Users = () => {
     dispatch(getAllUsers())
   },[dispatch])
 
-  const updateHandler=(userId)=>{
-    dispatch(updateUser(userId))
+  const updateHandler=async(userId)=>{
+  const stats=await dispatch(updateUser(userId))
+  if (stats.success===true) {
+    toast.success(stats.message)
+    dispatch({type:'clearMessage'})
+  }
   }
 
   const deleteButtonHandler=(userId)=>{

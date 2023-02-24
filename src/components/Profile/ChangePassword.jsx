@@ -4,32 +4,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changePassword } from '../../redux/actions/profile';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import useTitle from '../../Hooks/useTitle';
 
 
 export const ChangePassword = () => {
+    useTitle('Change password')
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const {message, error} = useSelector(state=>state.profile)
+    const { error} = useSelector(state=>state.profile)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const submitHandler = async(e) => {
         e.preventDefault();
-        dispatch(changePassword(oldPassword, newPassword))
-    };
+        const stats = await dispatch(changePassword(oldPassword, newPassword))
 
+        if (stats.success===true) {
+            toast.success(stats.message)
+            dispatch({type:'clearMessage'})
+            navigate('/profile')
+        }
+    };
     useEffect(()=>{
       if(error){
         toast.error(error)
         dispatch({type:'clearError'})
       }
-      if(message){
-        toast.success(message)
-        dispatch({type:'clearMessage'})
-        navigate('/profile')  
-      }
-    },[error, message, dispatch, navigate])
+    },[error, dispatch])
    
   return (
     <Container py="16" minH={'90vh'}>
